@@ -6,4 +6,6 @@ import (
 
 func Run() {
 	fmt.Println("Hello from katty!")
+	LoadEnv()
+	Config()
 }
