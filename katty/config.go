@@ -1,12 +1,14 @@
 package katty
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/devhindo/katty/lyrics"
 )
 
 func config() {
@@ -23,22 +25,7 @@ func config() {
 		log.Fatal(err)
 	}
 
-	var (
-		commands = []*discordgo.ApplicationCommand{
-			{
-				Name: "lyrics",
-				Description: "Get lyrics of a song",
-				Options: []*discordgo.ApplicationCommandOption{
-					{
-						Type: discordgo.ApplicationCommandOptionString,
-						Name: "song",
-						Description: "Name of the song",
-						Required:    true,
-					},
-			},
-		},
-		}
-	)
+
 
 	_, err = katty.ApplicationCommandBulkOverwrite(os.Getenv("APP_ID"), "", commands)
 
@@ -53,18 +40,31 @@ func config() {
 		}
 		s.InteractionRespond(i.Interaction, deferredResponse)
 
-		var song string
-		
+		var prompt string
+
 		for _, v := range i.ApplicationCommandData().Options {
-			if v.Name == "song" {
-				song = v.StringValue()
+			if v.Name == "prompt" {
+				prompt = v.StringValue()
 			}
 		}
-		log.Println(song)
+		log.Println(prompt)
+		song, artist, err := processLryicsCommand(prompt)
+
+		var response string
+
+		if err != nil {
+			response = fmt.Sprintf("%s", err)
+		} else {
+			lyrics, err := lyrics.FindLyrics(song, artist)
+			if err != nil {
+				log.Fatal(err)
+			}
+			response = lyrics
+		}
+		fmt.Println(response)
 		// respone with message contains the song name
 		// response with a message that contains the song name
 
-		response := "ask Google - I don't know the lyrics for: " + song
 
 		s.FollowupMessageCreate(i.Interaction, true, &discordgo.WebhookParams{
 			Content: response,
