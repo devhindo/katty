@@ -23,17 +23,58 @@ func config() {
 		log.Fatal(err)
 	}
 
-	log.Println("adding commands..")
-
-	registeredCommands := make([]*discordgo.ApplicationCommand, len(commands))
-	for i, v := range commands {
-		cmd, err := katty.ApplicationCommandCreate(katty.State.User.ID, "", v)
-		if err != nil {
-			log.Panicf("Cannot create '%v' command: %v", v.Name, err)
+	var (
+		commands = []*discordgo.ApplicationCommand{
+			{
+				Name: "lyrics",
+				Description: "Get lyrics of a song",
+				Options: []*discordgo.ApplicationCommandOption{
+					{
+						Type: discordgo.ApplicationCommandOptionString,
+						Name: "song",
+						Description: "Name of the song",
+						Required:    true,
+					},
+			},
+		},
 		}
-		registeredCommands[i] = cmd
-		log.Printf("Command '%v' registered", cmd.Name)
+	)
+
+	_, err = katty.ApplicationCommandBulkOverwrite(os.Getenv("APP_ID"), "", commands)
+
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	katty.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+		// Handle interaction here
+		deferredResponse := &discordgo.InteractionResponse{
+			Type: discordgo.InteractionResponseDeferredChannelMessageWithSource,
+		}
+		s.InteractionRespond(i.Interaction, deferredResponse)
+
+		var song string
+		
+		for _, v := range i.ApplicationCommandData().Options {
+			if v.Name == "song" {
+				song = v.StringValue()
+			}
+		}
+		log.Println(song)
+		// respone with message contains the song name
+		// response with a message that contains the song name
+
+		response := "ask Google - I don't know the lyrics for: " + song
+
+		s.FollowupMessageCreate(i.Interaction, true, &discordgo.WebhookParams{
+			Content: response,
+		})
+
+
+		
+		log.Println("interaction received")
+	})
+
 	defer katty.Close()
 
 	// idk what's this - but it actually keeps the app running
