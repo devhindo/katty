@@ -56,21 +56,17 @@ func config() {
 			response = fmt.Sprintf("%s", err)
 		} else {
 			lyrics, err := lyrics.FindLyrics(song, artist)
+
 			if err != nil {
-				log.Fatal(err)
+				response = "no lyrics found (sorry)"
 			}
 			response = lyrics
 		}
-		fmt.Println(response)
-		// respone with message contains the song name
-		// response with a message that contains the song name
 
 
 		s.FollowupMessageCreate(i.Interaction, true, &discordgo.WebhookParams{
 			Content: response,
 		})
-
-
 		
 		log.Println("interaction received")
 	})
