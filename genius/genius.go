@@ -5,5 +5,5 @@ import (
 )
 
 func GetLyrics(song string, artist string) (string, error) {
-	return "ask Google for now", nil
+	return "genius: ask Google for now" + "`" + song +"-" + artist + "`" , nil
 }
