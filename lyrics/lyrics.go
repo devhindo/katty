@@ -2,6 +2,7 @@ package lyrics
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/devhindo/katty/genius"
 	"github.com/devhindo/katty/musixmatch"
@@ -16,5 +17,13 @@ func FindLyrics(song string, artist string) (string, error) {
 			return "", errors.New("no lyrics found (sorry) - `" + song + "-" + artist +"`")
 		}
 	}
-	return lyrics, nil
+	
+	i := strings.Index(lyrics, "...")
+	if i == -1 {
+		return lyrics, nil
+	}
+
+	
+
+	return lyrics[:i], nil
 }

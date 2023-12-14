@@ -1,14 +1,14 @@
 package main
 
 import (
-	//"github.com/devhindo/katty/katty"
-	"fmt"
+	"github.com/devhindo/katty/katty"
 
-	"github.com/devhindo/katty/lyrics"
+	//"github.com/devhindo/katty/lyrics"
 )
 
 func main() {
-	//katty.Run()
+	katty.Run()
+	/*
 	tests := []struct {
 		song   string
 		artist string
@@ -27,4 +27,5 @@ func main() {
 		}
 		fmt.Println(lyrics)
 	}
+	*/
 }

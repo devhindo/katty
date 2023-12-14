@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/joho/godotenv" // todo delete later
+	//"github.com/joho/godotenv" // todo delete later
 
 
 	mxm "github.com/milindmadhukar/go-musixmatch"
@@ -22,10 +22,6 @@ import (
 
 func GetLyrics(song string, artist string) (string, error) {
 
-	err := godotenv.Load()
-	if err != nil {
-	  log.Fatal("Error loading .env file")
-	}
   
 	client := mxm.New(os.Getenv("MUSIXMATCH_API_KEY"), http.DefaultClient)
 
