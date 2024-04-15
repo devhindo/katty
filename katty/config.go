@@ -17,14 +17,7 @@ func config() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	katty.Identify.Intents = discordgo.IntentsAllWithoutPrivileged
-
-	err = katty.Open()
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	
 	activity := discordgo.Activity{
 		Name: "/lyrics song-artist",
 		Type: discordgo.ActivityTypeCustom,
@@ -38,6 +31,14 @@ func config() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	
+	katty.Identify.Intents = discordgo.IntentsAllWithoutPrivileged
+
+	err = katty.Open()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 
 	if err != nil {
 		fmt.Println("error creating Discord session,", err)
