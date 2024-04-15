@@ -1,31 +1,22 @@
 package main
 
 import (
-	"github.com/devhindo/katty/katty"
+	"net/http"
 
-	//"github.com/devhindo/katty/lyrics"
+	"github.com/devhindo/katty/katty"
 )
 
 func main() {
-	katty.Run()
-	/*
-	tests := []struct {
-		song   string
-		artist string
-	}{
-		{"Meds", "Shehab"},
-		//{"", ""},
-		//{"", ""},
-		//{"", ""},
-		//{"", ""},
-	}
+	go func() {
+		katty.Run()
+	}()
 
-	for _, test := range tests {
-		lyrics, err := lyrics.FindLyrics(test.song, test.artist)
-		if err != nil {
-			println(err.Error())
-		}
-		fmt.Println(lyrics)
-	}
-	*/
+	go func() {
+		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+			w.Write([]byte("Hello from katty!"))
+		})
+		http.ListenAndServe(":8080", nil)
+	}()
+
+	select {}
 }

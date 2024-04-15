@@ -18,6 +18,9 @@ func config() {
 		log.Fatal(err)
 	}
 
+	status := discordgo.Activity{Type: discordgo.ActivityTypeCustom, Name: "Custom Status", State: "whatever you want"}
+	fmt.Println(status)
+	
 	katty.Identify.Intents = discordgo.IntentsAllWithoutPrivileged
 
 	err = katty.Open()
