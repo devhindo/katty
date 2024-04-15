@@ -18,9 +18,6 @@ func config() {
 		log.Fatal(err)
 	}
 
-	status := discordgo.Activity{Type: discordgo.ActivityTypeCustom, Name: "Custom Status", State: "whatever you want"}
-	fmt.Println(status)
-	
 	katty.Identify.Intents = discordgo.IntentsAllWithoutPrivileged
 
 	err = katty.Open()
@@ -28,7 +25,23 @@ func config() {
 		log.Fatal(err)
 	}
 
+	activity := discordgo.Activity{
+		Name: "/lyrics song-artist",
+		Type: discordgo.ActivityTypeCustom,
+	}
+	
+	status := discordgo.UpdateStatusData{
+		Activities: []*discordgo.Activity{&activity},
+	}
+	
+	err = katty.UpdateStatusComplex(status)
+	if err != nil {
+		log.Fatal(err)
+	}
 
+	if err != nil {
+		fmt.Println("error creating Discord session,", err)
+	}
 
 	_, err = katty.ApplicationCommandBulkOverwrite(os.Getenv("APP_ID"), "", commands)
 
