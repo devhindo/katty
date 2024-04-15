@@ -1,7 +1,6 @@
 package katty
 
 import (
-	"log"
 
 	"github.com/joho/godotenv"
 )
@@ -9,7 +8,7 @@ import (
 func loadEnv() {
 	err := godotenv.Load()
 	if err != nil {
-	  log.Fatal("Error loading .env file")
+		return//  log.Fatal("Error loading .env file")
 	}
   
 	// env := os.Getenv("KEY")
