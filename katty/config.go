@@ -55,7 +55,6 @@ func config() {
 				prompt = v.StringValue()
 			}
 		}
-		log.Println(prompt)
 		song, artist, err := processLryicsCommand(prompt)
 
 		var response string
@@ -75,8 +74,6 @@ func config() {
 		s.FollowupMessageCreate(i.Interaction, true, &discordgo.WebhookParams{
 			Content: response,
 		})
-		
-		log.Println("interaction received")
 	})
 
 	defer katty.Close()
