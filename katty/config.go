@@ -18,10 +18,7 @@ func config() {
 		log.Fatal(err)
 	}
 	
-
 	katty.Identify.Intents = discordgo.IntentsAllWithoutPrivileged
-
-
 	
 	err = katty.Open()
 	if err != nil {
